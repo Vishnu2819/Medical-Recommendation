@@ -1,0 +1,123 @@
+body{
+    background-color: #DFDFDF;
+    margin: 30px;
+}
+
+h1{
+    text-align: center;
+}
+
+#input-patient-id{
+    border-radius: 3px;
+    padding: 10px;
+    border: none;
+    width: 20%;
+}
+
+#go-button{
+    border-radius: 3px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#go-button:hover{
+    background-color: black;
+    color: white;
+}
+
+#output-recommendation{
+    margin-top: 30px;
+    /* padding: 20px; */
+    background-color: white;
+    border-radius: 5px;
+}
+
+#output-patient-details{
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+th{
+    background-color: #9ED2FF;
+    width: 10%;
+    border: 0.8px solid grey;
+    text-align: left;
+}
+
+td{
+    background-color: #F7EEA0;
+    width: 10%;
+    border: 0.8px solid grey;
+    text-align: left;
+}
+
+#graph{
+    margin-top: 30px;
+}
+
+#line-graph{
+    margin-top: 30px;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 10px solid white;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+.graphs {
+    display: inline-block;
+    width: 90%; /* Adjust the width as needed */
+    margin: 10px; /* Add margin between the graphs */
+}
+
+.layout{
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    float: top;
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  min-width: 100%;
+}
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  z-index: 100;
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}
+
+  
+
