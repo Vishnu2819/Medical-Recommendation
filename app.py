@@ -128,9 +128,9 @@ app.layout = html.Div(children=[
             # Output for displaying recommendation information and patient details
             html.Div(
                 className="container2",
-                style={'width': '48%', 'float': 'left'},
+                style={'width': '50%', 'float': 'left'},
                 children=[
-                html.Div(id='output-patient-details' ,style={'padding': '0px'}),
+                html.Div(id='output-patient-details' ,style={'padding': '30px'}),
                 html.Div(children=[
                     dcc.Graph(
                         id='graph',
@@ -144,7 +144,7 @@ app.layout = html.Div(children=[
                                 'font': {'family': 'Arial', 'size': 12},  # Customize font style
                             },
                         },
-                        style={'display': 'none'}  # Initially set display to 'none'
+                        style={'display': 'block', 'padding': '30px'}  # Initially set display to 'none'
                     )
                 ]),
                 dcc.Graph(

@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc
+from dash import html, dcc, ctx
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
@@ -19,13 +19,36 @@ df_patient_info = pd.read_csv("OtherParts/Patient Generic Information Part C.csv
 df_patient_history = pd.read_csv("OtherParts/Patient Treatment History Part D.csv")
 df_patient_history['Date Treatment'] = pd.to_datetime(df_patient_history['Date Treatment'])
 
+histograms = []
+histograms.append(px.histogram(df_Dapagliflozin, x="Result Numeric Value", nbins=50, title="Dapagliflozin"))
+histograms.append(px.histogram(df_Empagliflozin, x="Result Numeric Value", nbins=50, title="Empagliflozin"))
+histograms.append(px.histogram(df_Glimepiride, x="Result Numeric Value", nbins=50, title="Glimepiride"))
+histograms.append(px.histogram(df_Glipizide_XR, x="Result Numeric Value", nbins=50, title="Glipizide XR"))
+histograms.append(px.histogram(df_Glipizide, x="Result Numeric Value", nbins=50, title="Glipizide"))
+histograms.append(px.histogram(df_Metformin, x="Result Numeric Value", nbins=50, title="Metformin (glucophage)"))
+histograms.append(px.histogram(df_Pioglitazone, x="Result Numeric Value", nbins=50, title="Pioglitazone"))
+histograms.append(px.histogram(df_Sitagliptin, x="Result Numeric Value", nbins=50, title="Sitagliptin"))
+histograms.append(px.histogram(df_MetforminXR, x="Result Numeric Value", nbins=50, title="Metformin (glucophage XR)"))
+
+histogram_divs = [
+    html.Div(
+        className='slide',  # Set the class name for the div
+        children=[
+            dcc.Graph(
+                id=f'graph{i}',
+                figure=histogram
+            )
+        ]
+    ) for i, histogram in enumerate(histograms, start=1)
+]
+
 # Initialize the Dash app
 app = dash.Dash(__name__)
 
 # Define the layout of the web app
 app.layout = html.Div(
     children=[
-    html.Script(src="/assets/your_script.js"),
+ 
     html.H1("Patient Treatment Recommendation"),
     
     # Input field for PatID
@@ -40,100 +63,17 @@ app.layout = html.Div(
         className="layout",
         children=[
             html.Div(
+                id="slideshow-container",
                 className="slideshow-container",
                 children=[
                     html.Div(
-                        className='slides',  # Set the class name for the container
-                        style={'width': '48%', 'float': 'left'},
-                        children=[
-                            html.Div(
-                                className='slide',  # Set the class name for the first graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph1',
-                                        figure=px.histogram(df_Dapagliflozin, x="Result Numeric Value", nbins=50, title="Dapagliflozin")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph2',
-                                        figure=px.histogram(df_Empagliflozin, x="Result Numeric Value", nbins=50, title="Empagliflozin")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph3',
-                                        figure=px.histogram(df_Glimepiride, x="Result Numeric Value", nbins=50, title="Glimepiride")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph4',
-                                        figure=px.histogram(df_Glipizide_XR, x="Result Numeric Value", nbins=50, title="Glipizide XR")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph5',
-                                        figure=px.histogram(df_Glipizide, x="Result Numeric Value", nbins=50, title="Glipizide")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph6',
-                                        figure=px.histogram(df_Metformin, x="Result Numeric Value", nbins=50, title="Metformin (glucophage)")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph7',
-                                        figure=px.histogram(df_Pioglitazone, x="Result Numeric Value", nbins=50, title="Pioglitazone")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph8',
-                                        figure=px.histogram(df_Sitagliptin, x="Result Numeric Value", nbins=50, title="Sitagliptin")
-                                    )
-                                ]
-                            ),
-                            html.Div(
-                                className='slide',  # Set the class name for the second graph
-                                children=[
-                                    dcc.Graph(
-                                        id='graph9',
-                                        figure=px.histogram(df_MetforminXR, x="Result Numeric Value", nbins=50, title="Metformin (glucophage XR)")
-                                    )
-                                ]
-                            )
-                        ]
+                        id="histo_fig"
                     ),
                     html.A(className="prev", children="❮", n_clicks=0, id="prev-button"),
                     html.A(className="next", children="❯", n_clicks=0, id="next-button")
                 ]
             ),
-
+            dcc.Interval(id='interval-component', interval=20000, n_intervals=0),  # Interval for slideshow timer
             # Output for displaying recommendation information and patient details
             html.Div(
                 className="container2",
@@ -172,9 +112,31 @@ app.layout = html.Div(
                 )
             ])
         ]
-    )
-    
+    )   
 ])
+
+# Callback to update the displayed slide when next or previous button is clicked
+@app.callback(
+    Output('histo_fig', 'children'),
+     [Input('prev-button', 'n_clicks'),
+     Input('next-button', 'n_clicks')],
+    [Input('interval-component', 'n_intervals')],
+     prevent_initial_call=False
+)
+def update_slide(n_clicks_prev, n_clicks_next, n_intervals):
+    slide_index = 0
+    total_slides = len(histogram_divs)
+    if "next-button" == ctx.triggered_id:
+        slide_index = (n_intervals + (n_clicks_next or 0)) % total_slides
+    elif "prev-button" == ctx.triggered_id:
+        slide_index = (n_intervals - (n_clicks_prev or 0)) % total_slides
+    else:
+        slide_index = n_intervals % total_slides
+    print(slide_index)
+    slide_index = slide_index if slide_index >= 0 else total_slides - 1
+
+    return histogram_divs[slide_index]
+
 
 # Callback to update the output based on user input
 @app.callback(
@@ -184,7 +146,7 @@ app.layout = html.Div(
         Output('output-patient-details', 'children'),
         Output('output-patient-details', 'style'),
         # Output("slides", "children"),
-        # Output('graph', 'figure'),
+        Output('graph', 'figure'),
         Output('graph', 'style'),
         Output('line-graph', 'figure'),
         Output('line-graph', 'style')
@@ -194,6 +156,7 @@ app.layout = html.Div(
     # [Input("prev-button", "n_clicks")],
     # [Input("next-button", "n_clicks")]
 )
+
 def update_output(n_clicks, patient_id):
     if n_clicks > 0:
         if patient_id is None or not patient_id.strip():
@@ -290,4 +253,9 @@ def update_output(n_clicks, patient_id):
 
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8051)
+
+
+
+# ************************************************************************************************************************************************************************
+

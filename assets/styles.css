@@ -71,6 +71,10 @@ td{
     border-radius: 5px;
     margin-top: 30px;
 }
+
+.container2{
+
+}
 .graphs {
     display: inline-block;
     width: 90%; /* Adjust the width as needed */
@@ -82,42 +86,57 @@ td{
     justify-content: space-around;
     /* align-items: center; */
     float: top;
+    margin: 0;
+}
+
+.container2{
+    width: 45%;
+    float: left;
 }
 
 .slideshow-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
+    top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 450px;
+    overflow: hidden;
+    border: 20px solid white;
+    border-radius: 5px;
+    width: 45%; /* Adjust the width as needed */
+    float: left;
+    margin: 0; /* Center the container */
+    position: relative; /* Relative positioning for absolute positioning of prev and next buttons */
 }
 
 .slides {
-  display: flex;
-  transition: transform 0.5s ease;
+    display: flex;
+    justify-content: flex-start; /* Start from the left */
+    align-items: center;
+    flex-wrap: nowrap; /* Ensure slides stay in a single row */
+    transition: transform 0.5s ease;
 }
 
-.slide {
-  min-width: 100%;
-}
 
 .prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  padding: 16px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  z-index: 100;
+    position: absolute; /* Absolute positioning for navigation buttons */
+    top: 50%; /* Position vertically at the middle */
+    transform: translateY(-50%); /* Adjust to center vertically */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    cursor: pointer;
+}
+
+#histo_fig{
+    width: 100%;
 }
 
 .prev {
-  left: 0;
+    left: 0;
 }
 
 .next {
-  right: 0;
+    right: 0;
 }
-
-  
 
