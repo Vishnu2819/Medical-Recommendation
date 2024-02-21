@@ -18,17 +18,18 @@ df_recommendation = pd.read_csv("OtherParts/Patient Treatment Recomendation Part
 df_patient_info = pd.read_csv("OtherParts/Patient Generic Information Part C.csv")
 df_patient_history = pd.read_csv("OtherParts/Patient Treatment History Part D.csv")
 df_patient_history['Date Treatment'] = pd.to_datetime(df_patient_history['Date Treatment'])
+df_sec_pred_res = pd.read_csv("Part B/sec_pred_res/Secondary predicted results.csv")
 
 histograms = []
-histograms.append(px.histogram(df_Dapagliflozin, x="Result Numeric Value", nbins=50, title="Dapagliflozin"))
-histograms.append(px.histogram(df_Empagliflozin, x="Result Numeric Value", nbins=50, title="Empagliflozin"))
-histograms.append(px.histogram(df_Glimepiride, x="Result Numeric Value", nbins=50, title="Glimepiride"))
-histograms.append(px.histogram(df_Glipizide_XR, x="Result Numeric Value", nbins=50, title="Glipizide XR"))
-histograms.append(px.histogram(df_Glipizide, x="Result Numeric Value", nbins=50, title="Glipizide"))
-histograms.append(px.histogram(df_Metformin, x="Result Numeric Value", nbins=50, title="Metformin (glucophage)"))
-histograms.append(px.histogram(df_Pioglitazone, x="Result Numeric Value", nbins=50, title="Pioglitazone"))
-histograms.append(px.histogram(df_Sitagliptin, x="Result Numeric Value", nbins=50, title="Sitagliptin"))
-histograms.append(px.histogram(df_MetforminXR, x="Result Numeric Value", nbins=50, title="Metformin (glucophage XR)"))
+histograms.append(("Dapagliflozin",px.histogram(df_Dapagliflozin, x="Result Numeric Value", nbins=50, title="Dapagliflozin")))
+histograms.append(("Empagliflozin",px.histogram(df_Empagliflozin, x="Result Numeric Value", nbins=50, title="Empagliflozin")))
+histograms.append(("Glimepiride",px.histogram(df_Glimepiride, x="Result Numeric Value", nbins=50, title="Glimepiride")))
+histograms.append(("Glipizide XR",px.histogram(df_Glipizide_XR, x="Result Numeric Value", nbins=50, title="Glipizide XR")))
+histograms.append(("Glipizide",px.histogram(df_Glipizide, x="Result Numeric Value", nbins=50, title="Glipizide")))
+histograms.append(("Metformin",px.histogram(df_Metformin, x="Result Numeric Value", nbins=50, title="Metformin (glucophage)")))
+histograms.append(("Pioglitazone",px.histogram(df_Pioglitazone, x="Result Numeric Value", nbins=50, title="Pioglitazone")))
+histograms.append(("Sitagliptin",px.histogram(df_Sitagliptin, x="Result Numeric Value", nbins=50, title="Sitagliptin")))
+histograms.append(("Metformin XR",px.histogram(df_MetforminXR, x="Result Numeric Value", nbins=50, title="Metformin (glucophage XR)")))
 
 histogram_divs = [
     html.Div(
@@ -39,8 +40,11 @@ histogram_divs = [
                 figure=histogram
             )
         ]
-    ) for i, histogram in enumerate(histograms, start=1)
+    ) for i,(_, histogram) in enumerate(histograms, start=0)
 ]
+
+
+
 
 # Initialize the Dash app
 app = dash.Dash(__name__)
@@ -48,8 +52,10 @@ app = dash.Dash(__name__)
 # Define the layout of the web app
 app.layout = html.Div(
     children=[
- 
     html.H1("Patient Treatment Recommendation"),
+
+    html.Br(),
+    html.Br(),
     
     # Input field for PatID
     dcc.Input(id='input-patient-id', type='text', placeholder='Enter PatID'),
@@ -73,66 +79,85 @@ app.layout = html.Div(
                     html.A(className="next", children="❯", n_clicks=0, id="next-button")
                 ]
             ),
-            dcc.Interval(id='interval-component', interval=20000, n_intervals=0),  # Interval for slideshow timer
             # Output for displaying recommendation information and patient details
             html.Div(
                 className="container2",
                 style={'width': '48%', 'float': 'left'},
                 children=[
                 html.Div(id='output-patient-details' ,style={'padding': '0px'}),
-                html.Div(children=[
-                    dcc.Graph(
-                        id='graph',
-                        figure={
-                            'data': [],
-                            'layout': {
-                                'title': 'Treatment History',
-                                'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                                'yaxis': {'title': 'Values', 'showgrid': True},
-                                'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
-                                'font': {'family': 'Arial', 'size': 12},  # Customize font style
-                            },
-                        },
-                        style={'display': 'none'}  # Initially set display to 'none'
-                    )
-                ]),
-                dcc.Graph(
-                    id='line-graph',
-                    figure={
-                        'data': [],
-                        'layout': {
-                            'title': 'HbA1c Over Time',
-                            'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                            'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
-                            'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
-                            'font': {'family': 'Arial', 'size': 12},  # Customize font style
-                        },
-                    },
-                    style={'display': 'none'}  # Initially set display to 'none'
-                )
-            ])
+                html.Div(
+                    children=[
+                        html.Div(
+                            id='point_graph',
+                            children=[
+                                dcc.Graph(
+                                        id='graph',
+                                        figure={
+                                            'data': [],
+                                            'layout': {
+                                                'title': 'Treatment History',
+                                                'xaxis': {'title': 'Timestamp', 'showgrid': True},
+                                                'yaxis': {'title': 'Values', 'showgrid': True},
+                                                'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
+                                                'font': {'family': 'Arial', 'size': 12},  # Customize font style
+                                                'margin': {'l': 200, 'r': -20, 't': 20, 'b': 20}  # Adjust the left margin
+                                            },
+                                        },
+                                        config={'scrollZoom': True},
+                                        style={'display': 'none'}  # Initially set display to 'none'
+                                    )
+
+                                ])
+                            ],
+                            style={'marginLeft': 'auto', 'marginRight': 0}
+                        ),
+                        html.Div(
+                           id='line_graph',
+                           children=[
+                               dcc.Graph(
+                                    id='line-graph',
+                                    figure={
+                                        'data': [],
+                                        'layout': {
+                                            'title': 'HbA1c Over Time',
+                                            'xaxis': {'title': 'Timestamp', 'showgrid': True},
+                                            'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
+                                            'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
+                                            'font': {'family': 'Arial', 'size': 12},  # Customize font style
+                                        },
+                                    },
+                                    style={'display': 'none'}  # Initially set display to 'none'
+                                )
+                           ] 
+                        )
+                ])
         ]
     )   
 ])
+
+# Find the index of 'Dapagliflozin' in df_sec_pred_res
+# dapagliflozin_index = df_sec_pred_res[df_sec_pred_res['Treatment'] == 'Dapagliflozin'].index[0]
+
+# print(dapagliflozin_index)
+# print(histogram_divs[dapagliflozin_index].children[0].figure)
+
+
+
 
 # Callback to update the displayed slide when next or previous button is clicked
 @app.callback(
     Output('histo_fig', 'children'),
      [Input('prev-button', 'n_clicks'),
      Input('next-button', 'n_clicks')],
-    [Input('interval-component', 'n_intervals')],
      prevent_initial_call=False
 )
-def update_slide(n_clicks_prev, n_clicks_next, n_intervals):
+def update_slide(n_clicks_prev, n_clicks_next):
     slide_index = 0
     total_slides = len(histogram_divs)
     if "next-button" == ctx.triggered_id:
-        slide_index = (n_intervals + (n_clicks_next or 0)) % total_slides
+        slide_index = (n_clicks_next or 0) % total_slides
     elif "prev-button" == ctx.triggered_id:
-        slide_index = (n_intervals - (n_clicks_prev or 0)) % total_slides
-    else:
-        slide_index = n_intervals % total_slides
-    print(slide_index)
+        slide_index = (n_clicks_prev or 0) % total_slides
     slide_index = slide_index if slide_index >= 0 else total_slides - 1
 
     return histogram_divs[slide_index]
