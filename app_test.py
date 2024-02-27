@@ -43,6 +43,13 @@ histogram_divs = [
     ) for i,(_, histogram) in enumerate(histograms, start=0)
 ]
 
+for i in range(df_sec_pred_res.shape[0]):
+    record = df_sec_pred_res.iloc[i]
+    for j in range(len(histograms)):
+        if histograms[j][0] == record['Treatment']:
+            histograms[j][1].add_vline(x=record['Result Numeric Value'],
+                                    line=dict(color='red', width=3, dash='dash'),
+                                    annotation_text=f"{record['Treatment']} Treatment")
 
 
 
