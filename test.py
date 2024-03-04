@@ -140,7 +140,7 @@ app.layout = html.Div(
                         )
                 ])
         ]
-    ) 
+    ),
     html.Link(rel='stylesheet', href='/assets/styles.css')  
 ])
 
@@ -287,7 +287,7 @@ def update_output(n_clicks, patient_id):
 
 # Run the app
 if __name__ == '__main__':
-    app.server(debug=True, port=8051, host='0.0.0.0')
+    app.run_server(debug=True, port=8051, host='0.0.0.0')
 
 
 
