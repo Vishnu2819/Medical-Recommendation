@@ -40,6 +40,7 @@ MET1 = functions.load_csv_from_box(MET1_ID)
 MET0 = functions.load_csv_from_box(MET0_ID)
 MET2 = functions.load_csv_from_box(MET2_ID)
 final_merged = functions.load_csv_from_box(final_merged_id)
+loaded_models = functions.load_models()
 
 # Define a dictionary to store the dataframes
 regimens_dict = {
@@ -54,7 +55,7 @@ histogram_divs = []
 treatment_dataframes = {}  # Define treatment_dataframes here
 
 # Read the CSV files
-df_recommendation = pd.read_csv("OtherParts/Patient Treatment Recomendation Part A.csv")
+# df_recommendation = pd.read_csv("OtherParts/Patient Treatment Recomendation Part A.csv")
 # df_patient_info = pd.read_csv("OtherParts/Patient Generic Information Part C.csv")
 # df_patient_history = pd.read_csv("OtherParts/Patient Treatment History Part D.csv")
 # df_patient_history['Date Treatment'] = pd.to_datetime(df_patient_history['Date Treatment'])
@@ -150,7 +151,6 @@ app.layout = html.Div(
     )   
 ])
 
-# Callback to update the output based on user input
 @app.callback(
     [
         Output('output-recommendation', 'children'),
@@ -215,12 +215,11 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
             )
 
         final_merged_df = final_merged[final_merged['PatID'] == patient_id]
-        patient_data_recommendation = df_recommendation[df_recommendation['PatID'] == patient_id]
-        patient_data_recommendation_patient = patient_data_recommendation[patient_data_recommendation['PatID'] == patient_id]
+        best_result, best_regimen_name = functions.create_patient_recomendation(loaded_models, final_merged, patient_id)
         patient_data_info = functions.generate_patient_infos(patient_id, final_merged)
 
         # Check if any of the DataFrames are empty
-        if final_merged_df.empty or patient_data_info.empty or patient_data_recommendation.empty:
+        if final_merged_df.empty or patient_data_info.empty:
             return (
                 f"No data found for PatID: {patient_id}",
                 {'padding': '20px'},
@@ -232,7 +231,7 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'display': 'none'},
                 []
             )
-        
+
         histograms = []
 
         # Iterate over each treatment DataFrame
@@ -261,19 +260,16 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
             elif ctx_id == "next-button":
                 slide_index = (n_clicks_next or 0) % total_slides
 
-        treatment_dataframes = functions.create_similar_data(patient_id, regimens_dict, final_merged)
+        current_treatment = patient_data_info['Regimen'].values[0]
+        predicted_result = best_result
 
-        current_treatment = patient_data_recommendation_patient['Current Treatment'].values[0]
-        recommended_treatment = patient_data_recommendation_patient['Reccomended Treatment'].values[0]
-        predicted_result = patient_data_recommendation_patient['Predicted Result'].values[0]
-
-        result_text = f"Recommendation: Switch from {current_treatment} to {recommended_treatment}\n"
+        result_text = f"Recommendation: Switch from {current_treatment} to {best_regimen_name}\n"
         result_text += f"Predicted HbA1c (%): {predicted_result}"
 
         patient_details = pd.melt(patient_data_info, id_vars=['PatID'],
                                   value_vars=['PatID', 'Sex', 'Ethnicity', 'Age', 'BMI', 'Weight', 'Height',
                                                'Regimen', 'Result Numeric Value',
-                                              'Date Encount', 'Result Date', 'Regimen Date'],
+                                               'Date Encount', 'Result Date', 'Regimen Date'],
                                   var_name='Attribute', value_name='Value')
 
         table = html.Table(
@@ -286,17 +282,17 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                          title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
                          template='plotly_white', range_x=[final_merged_df['Regimen Date'].min(), final_merged_df['Regimen Date'].max()])
 
-        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen' , title='Treatment History',
-                       labels={'Result Date': 'Date', 'Result Numeric Value': 'Values'}, 
+        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen', title='Treatment History',
+                       labels={'Result Date': 'Date', 'Result Numeric Value': 'Values'},
                        template='plotly_white', range_x=[final_merged_df['Result Date'].min(), final_merged_df['Result Date'].max()])
 
         return (
-            result_text, {'padding':'20px'}, table, {'padding':'20px'},
-            fig, {'display': 'block'}, fig2, {'display': 'block'}, 
+            result_text, {'padding': '20px'}, table, {'padding': '20px'},
+            fig, {'display': 'block'}, fig2, {'display': 'block'},
             histogram_divs[slide_index]
         )
 
-    return '', {'padding':'0px'}, [], {'padding':'0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, []  # Initial or no-click state
+    return '', {'padding': '0px'}, [], {'padding': '0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, []  # Initial or no-click state
 
 
 
