@@ -1,29 +1,23 @@
 import dash
-from dash import html, dcc, ctx
+from dash import html, dcc
 from dash.dependencies import Input, Output
 import pandas as pd
 import requests
-import io
-from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import NearestNeighbors
-import plotly.express as px
 import os
 from dotenv import load_dotenv
-import numpy as np
+import plotly.express as px
 import functions
 
 load_dotenv()
 
-response = requests.get(os.getenv('url'), timeout=60)  # Timeout set to 30 seconds
-response_2 = requests.get(os.getenv('url_2'), timeout=60)  # Timeout set to 30 seconds
-response_3 = requests.get(os.getenv('url_3'), timeout=60)  # Timeout set to 30 seconds
+response = requests.get(os.getenv('url'), timeout=60)
+response_2 = requests.get(os.getenv('url_2'), timeout=60)
+response_3 = requests.get(os.getenv('url_3'), timeout=60)
 
-# Set the IDE's Display to something really big so large DataFrames are visible
 pd.set_option('display.max_rows', 1500)
 pd.set_option('display.max_columns', 1500)
 pd.set_option('display.width', 3000)
 
-# Define File IDs
 MULTI_ID = '1465824013335'
 OTHER0_ID = '1465824153046'
 OTHER1_ID = '1465819719909'
@@ -32,7 +26,6 @@ MET0_ID = '1465825057493'
 MET2_ID = '1468178601581'
 final_merged_id = '1468891677131'
 
-# Load in files using IDs
 MULTI = functions.load_csv_from_box(MULTI_ID)
 OTHER0 = functions.load_csv_from_box(OTHER0_ID)
 OTHER1 = functions.load_csv_from_box(OTHER1_ID)
@@ -42,7 +35,6 @@ MET2 = functions.load_csv_from_box(MET2_ID)
 final_merged = functions.load_csv_from_box(final_merged_id)
 loaded_models = functions.load_models()
 
-# Define a dictionary to store the dataframes
 regimens_dict = {
     'OTHER0': OTHER0,
     'OTHER1': OTHER1,
@@ -52,104 +44,116 @@ regimens_dict = {
 }
 
 histogram_divs = []
-treatment_dataframes = {}  # Define treatment_dataframes here
+treatment_dataframes = {}
 
-# Read the CSV files
-# df_recommendation = pd.read_csv("OtherParts/Patient Treatment Recomendation Part A.csv")
-# df_patient_info = pd.read_csv("OtherParts/Patient Generic Information Part C.csv")
-# df_patient_history = pd.read_csv("OtherParts/Patient Treatment History Part D.csv")
-# df_patient_history['Date Treatment'] = pd.to_datetime(df_patient_history['Date Treatment'])
-# df_sec_pred_res = pd.read_csv("Part B/sec_pred_res/Secondary predicted results.csv")
-
-# Initialize the Dash app
 app = dash.Dash(__name__)
 
-# Define the layout of the web app
+image_div = html.Div(
+    className="logos",
+    children=
+        [
+        html.Div([
+            html.Img(src="./assets/curf.png", style={'height': '80px', 'object-fit': 'cover'})
+        ]),
+        html.Div([
+            html.Img(src="./assets/prisma.png", style={'height': '80px', 'object-fit': 'cover'})
+        ])
+    ])
+
 app.layout = html.Div(
     children=[
-    html.H1("Patient Treatment Recommendation"),
+        image_div,
+        html.H1("Patient Treatment Recommendation"),
 
-    html.Br(),
-    html.Br(),
+        html.Br(),
+        html.Br(),
 
-    # Input field for PatID
-    dcc.Input(id='input-patient-id', type='text', placeholder='Enter PatID'),
+        html.Div(
+            id="search_bar",
+            children=[
+                dcc.Input(id='input-patient-id', type='text', placeholder='Enter PatID'),
 
-    # "Go" button to trigger the search
-    html.Button('Go', id='go-button', n_clicks=0),
+                html.Button('Go', id='go-button', n_clicks=0)
+            ]
+        ),
 
-    # Part B
-    html.Div(id='output-recommendation', style={'padding': '0px'}),
-    html.Div(
-        className="layout",
-        children=[
-            html.Div(
-                id="slideshow-container",
-                className="slideshow-container",
-                children=[
-                    html.Div(
-                        id="histo_fig"  # This div will contain the histogram graphs
-                    ),
-                    html.A(className="prev", children="❮", n_clicks=0, id="prev-button"),
-                    html.A(className="next", children="❯", n_clicks=0, id="next-button")
-                ]
-            ),
-            # Output for displaying recommendation information and patient details
-            html.Div(
-                className="container2",
-                style={'width': '48%', 'float': 'left'},
-                children=[
-                html.Div(id='output-patient-details', style={'padding': '0px'}),
+        html.Div(id='output-recommendation', style={'padding': '0px'}),
+        html.Div(
+            className="layout",
+            children=[
                 html.Div(
+                    id="slideshow-container",
+                    className="slideshow-container",
+                    style={'display':'none'},
                     children=[
                         html.Div(
-                            id='point_graph',
+                            id="histo_fig",  # This div will contain the histogram graphs
+                            className="histo-fig-container",
+                        ),
+                        html.A(className="prev", children="❮", n_clicks=0, id="prev-button"),
+                        html.A(className="next", children="❯", n_clicks=0, id="next-button")
+                    ]
+                ),
+                html.Div(
+                    className="container2",
+                    style={'width': '48%', 'float': 'left'},
+                    children=[
+                        html.Div(
+                            className="patient_details_container",
+                            children=[
+                                html.Div(id='output-patient-details', style={'padding': '0px'})
+                            ]
+                        ),
+                        html.Div(
+                            children=[
+                                html.Div(
+                                    id='point_graph',
+                                    children=[
+                                        dcc.Graph(
+                                            id='graph',
+                                            figure={
+                                                'data': [],
+                                                'layout': {
+                                                    'title': 'Treatment History',
+                                                    'xaxis': {'title': 'Timestamp', 'showgrid': True},
+                                                    'yaxis': {'title': 'Values', 'showgrid': True},
+                                                    'legend': {'x': 0, 'y': 1},
+                                                    'font': {'family': 'Arial', 'size': 12},
+                                                    'margin': {'l': 200, 'r': -20, 't': 20, 'b': 20}
+                                                },
+                                            },
+                                            style={'display': 'none'}
+                                        )
+                                    ]
+                                ),
+                            ],
+                            style={'marginLeft': 'auto', 'marginRight': 0}
+                        ),
+                        html.Div(
+                            id='line_graph',
                             children=[
                                 dcc.Graph(
-                                    id='graph',
+                                    id='line-graph',
                                     figure={
                                         'data': [],
                                         'layout': {
-                                            'title': 'Treatment History',
+                                            'title': 'HbA1c Over Time',
                                             'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                                            'yaxis': {'title': 'Values', 'showgrid': True},
-                                            'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
-                                            'font': {'family': 'Arial', 'size': 12},  # Customize font style
-                                            'margin': {'l': 200, 'r': -20, 't': 20, 'b': 20}  # Adjust the left margin
-                                        },
+                                            'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
+                                            'legend': {'x': 0, 'y': 1},
+                                            'font': {'family': 'Arial', 'size': 12},
+                                        }
                                     },
-                                    config={'scrollZoom': True},
-                                    style={'display': 'none'}  # Initially set display to 'none'
+                                    style={'display': 'none'}
                                 )
-
-                            ])
-                        ],
-                        style={'marginLeft': 'auto', 'marginRight': 0}
-                    ),
-                    html.Div(
-                        id='line_graph',
-                        children=[
-                            dcc.Graph(
-                                id='line-graph',
-                                figure={
-                                    'data': [],
-                                    'layout': {
-                                        'title': 'HbA1c Over Time',
-                                        'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                                        'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
-                                        'legend': {'x': 0, 'y': 1},  # Position the legend at the top-left corner
-                                        'font': {'family': 'Arial', 'size': 12},  # Customize font style
-                                    },
-                                },
-                                config={'scrollZoom': True},
-                                style={'display': 'none'}  # Initially set display to 'none'
-                            )
-                        ] 
-                    )
-                ])
-        ]
-    )   
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
 ])
+
 
 @app.callback(
     [
@@ -161,7 +165,8 @@ app.layout = html.Div(
         Output('graph', 'style'),
         Output('line-graph', 'figure'),
         Output('line-graph', 'style'),
-        Output('histo_fig', 'children')
+        Output('histo_fig', 'children'),
+        Output('slideshow-container', 'style')
     ],
     [
         Input('go-button', 'n_clicks'),
@@ -196,7 +201,8 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'display': 'none'},
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
-                []
+                [],
+                {'display': 'none'}
             )
 
         try:
@@ -211,7 +217,8 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'display': 'none'},
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
-                []
+                [],
+                {'display': 'none'}
             )
 
         final_merged_df = final_merged[final_merged['PatID'] == patient_id]
@@ -229,7 +236,8 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'display': 'none'},
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
-                []
+                [],
+                {'display': 'none'}
             )
 
         histograms = []
@@ -263,8 +271,19 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
         current_treatment = patient_data_info['Regimen'].values[0]
         predicted_result = best_result
 
-        result_text = f"Recommendation: Switch from {current_treatment} to {best_regimen_name}\n"
-        result_text += f"Predicted HbA1c (%): {predicted_result}"
+        if current_treatment == best_regimen_name:
+            result_text = [
+            html.Div(f"Continue current Regimen : {current_treatment}"),
+            html.Br(),
+            html.Div(f"Predicted HbA1c (%): {predicted_result}")
+            ]
+        else:
+            result_text = [
+            html.Div(f"Recommendation: Switch from {current_treatment} to {best_regimen_name}"),
+            html.Br(),
+            html.Div(f"Predicted HbA1c (%): {predicted_result}")
+            ]
+
 
         patient_details = pd.melt(patient_data_info, id_vars=['PatID'],
                                   value_vars=['PatID', 'Sex', 'Ethnicity', 'Age', 'BMI', 'Weight', 'Height',
@@ -289,16 +308,13 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
         return (
             result_text, {'padding': '20px'}, table, {'padding': '20px'},
             fig, {'display': 'block'}, fig2, {'display': 'block'},
-            histogram_divs[slide_index]
+            histogram_divs[slide_index], {'display': 'flex'}
         )
 
-    return '', {'padding': '0px'}, [], {'padding': '0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, []  # Initial or no-click state
+    return '', {'padding': '0px'}, [], {'padding': '0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, [], {'display': 'none'}  # Initial or no-click state
 
 
 
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-
-

@@ -52,6 +52,7 @@ h1{
 }
 
 #output-patient-details{
+    width: max-content;
     margin-top: 30px;
     padding: 20px;
     background-color: white;
@@ -60,16 +61,17 @@ h1{
 
 th{
     background-color: #9ED2FF;
-    width: 10%;
+    padding: 5px 40px;
     border: 0.8px solid grey;
-    text-align: left;
+    text-align: center;
 }
 
 td{
     background-color: #F7EEA0;
-    width: 10%;
+    padding: 7.7px 40px;
+    width: max-content;
     border: 0.8px solid grey;
-    text-align: left;
+    text-align: center;
 }
 
 #graph{
@@ -114,6 +116,12 @@ td{
 .container2{
     width: 45%;
     float: left;
+}
+
+.patient_details_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slideshow-container {
@@ -164,3 +172,16 @@ td{
     right: 0;
 }
 
+#search_bar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.logos{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
