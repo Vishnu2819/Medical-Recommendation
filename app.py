@@ -242,10 +242,14 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
 
         histograms = []
 
+        current_treatment = patient_data_info['Regimen'].values[0]
+        predicted_result = best_result
+
         # Iterate over each treatment DataFrame
         for treatment, df in regimens_dict.items():
             # Create histogram and append to the list
-            histograms.append((treatment, px.histogram(df, x="Result Numeric Value", nbins=50, title=treatment)))
+            histograms.append((treatment, px.histogram(df, x="Result Numeric Value", nbins=50, title=f"Similar Patients on {treatment} *" if current_treatment == treatment else f"Similar Patients on {treatment}")))
+
 
         histogram_divs = [
             html.Div(
@@ -267,9 +271,6 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 slide_index = (n_clicks_prev or 0) % total_slides
             elif ctx_id == "next-button":
                 slide_index = (n_clicks_next or 0) % total_slides
-
-        current_treatment = patient_data_info['Regimen'].values[0]
-        predicted_result = best_result
 
         if current_treatment == best_regimen_name:
             result_text = [
