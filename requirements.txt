@@ -1,0 +1,10 @@
+dash
+pandas
+requests
+python-dotenv
+plotly
+scikit-learn
+plotly-express
+xgboost
+seaborn
+boxsdk
