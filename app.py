@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 import plotly.express as px
 import functions
+import plotly.graph_objs as go
 
 load_dotenv()
 
@@ -340,13 +341,38 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
              range(len(patient_details))]
         )
 
-        fig = px.scatter(final_merged_df, x='Regimen Date', y='Regimen', color='Regimen',
-                         title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
-                         template='plotly_white', range_x=[final_merged_df['Regimen Date'].min(), final_merged_df['Regimen Date'].max()])
+        traces = []
+        for regimen in final_merged_df['Regimen'].unique():
+            regimen_df = final_merged_df[final_merged_df['Regimen'] == regimen]
+            trace = go.Scatter(
+                x=regimen_df['Result Date'],
+                y=regimen_df['Result Numeric Value'],
+                mode='lines+markers',
+                name=regimen
+            )
+            traces.append(trace)
 
-        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen', title='Result History',
-                       labels={'Result Date': 'Date', 'Result Numeric Value': 'HbA1c'},
-                       template='plotly_white', range_x=[final_merged_df['Result Date'].min(), final_merged_df['Result Date'].max()])
+        # Convert 'Regimen Date' column to datetime format
+        final_merged_df['Regimen Date'] = pd.to_datetime(final_merged_df['Regimen Date'])
+
+        # Calculate the desired range for the x-axis
+        start_date = final_merged_df['Regimen Date'].min() - pd.Timedelta(days=45)
+        end_date = final_merged_df['Regimen Date'].max() + pd.Timedelta(days=45)
+
+        # Create the figure with the adjusted x-axis range
+        fig = px.scatter(final_merged_df, x='Regimen Date', y='Regimen', color='Regimen',
+                        title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
+                        template='plotly_white', range_x=[start_date, end_date])
+
+        fig2 = go.Figure(data=traces, layout=go.Layout(
+                title='Result History',
+                xaxis={'title': 'Date'},
+                yaxis={'title': 'HbA1c'},
+                template='plotly_white'
+            ))
+
+            # Update the layout of the figure
+        fig2.update_layout(legend={'x': 0, 'y': 1}, margin={'l': 50, 'r': 20, 't': 80, 'b': 50})
 
         return (
             result_text, {'padding': '20px'}, table, {'padding': '20px'},
