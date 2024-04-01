@@ -43,6 +43,15 @@ regimens_dict = {
     'MET2': MET2,
 }
 
+regmimen_names = {
+    'OTHER0': 'Non-Metformin monotherapy',
+    'OTHER1': 'Non-Metformin dual therapy',
+    'MET1': 'Metformin / Other0 dual therapy',
+    'MET0': 'Metformin monotherapy',
+    'MET2': 'Metformin / Other1 triple therapy',
+}
+
+
 histogram_divs = []
 treatment_dataframes = {}
 
@@ -310,8 +319,8 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                          title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
                          template='plotly_white', range_x=[final_merged_df['Regimen Date'].min(), final_merged_df['Regimen Date'].max()])
 
-        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen', title='Treatment History',
-                       labels={'Result Date': 'Date', 'Result Numeric Value': 'Values'},
+        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen', title='Result History',
+                       labels={'Result Date': 'Date', 'Result Numeric Value': 'HbA1c'},
                        template='plotly_white', range_x=[final_merged_df['Result Date'].min(), final_merged_df['Result Date'].max()])
 
         return (
