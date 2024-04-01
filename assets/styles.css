@@ -53,7 +53,7 @@ h1{
 
 #output-patient-details{
     width: max-content;
-    margin-top: 30px;
+    margin-top: 0px;
     padding: 20px;
     background-color: white;
     border-radius: 10px;
@@ -79,15 +79,12 @@ td{
     width: 100%;
 }
 
-#point_graph{
+/* #point_graph{
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#line-graph{
-    margin-top: 30px;
-}
+    width: 100%;
+} */
 
 .container{
     display: flex;
@@ -107,16 +104,18 @@ td{
 
 .layout{
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    /* justify-content: space-around; */
     /* align-items: center; */
     float: top;
     margin: 0;
 }
 
-.container2{
+/* .container2 {
     width: 45%;
-    float: left;
-}
+    display: flex;
+    flex-direction: row;
+} */
 
 .patient_details_container{
     display: flex;
@@ -124,7 +123,7 @@ td{
     justify-content: center;
 }
 
-.slideshow-container {
+/* .slideshow-container {
     top: 30px;
     display: flex;
     justify-content: center;
@@ -133,25 +132,36 @@ td{
     overflow: hidden;
     border: 20px solid white;
     border-radius: 10px;
-    width: 45%; /* Adjust the width as needed */
+    width: 100%; 
     float: left;
-    margin: 0; /* Center the container */
-    position: relative; /* Relative positioning for absolute positioning of prev and next buttons */
-}
+    margin: 0; 
+    position: relative; 
+} */
+
 
 .slides {
     display: flex;
-    justify-content: flex-start; /* Start from the left */
+    justify-content: flex-start; 
     align-items: center;
-    flex-wrap: nowrap; /* Ensure slides stay in a single row */
+    flex-wrap: nowrap; 
     transition: transform 0.5s ease;
 }
 
 
+/* .prev, .next {
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    cursor: pointer;
+} */
+
 .prev, .next {
-    position: absolute; /* Absolute positioning for navigation buttons */
-    top: 50%; /* Position vertically at the middle */
-    transform: translateY(-50%); /* Adjust to center vertically */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 10;
@@ -160,6 +170,7 @@ td{
 
 #histo_fig{
     width: 85%;
+    margin: 0px;
     align-items: center;
     justify-content: center;
 }
@@ -185,3 +196,61 @@ td{
     align-items: center;
     justify-content: space-between;
 }
+
+.container1 {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Adjust height as needed */
+    display: flex;
+    justify-content: space-around; /* Align items to the left */
+    flex-direction: row;
+    margin-top: 30px;
+}
+
+.container2 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+/* .slideshow-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 20px solid white;
+    border-radius: 10px;
+} */
+
+.slideshow-container {
+    flex: 1; /* Take remaining vertical space */
+    display: flex;
+    justify-content: center;
+    margin-right: 40px;
+    align-items: center;
+    overflow: hidden;
+    border: 20px solid white;
+    border-radius: 10px;
+    position: relative; /* Added position relative */
+}
+
+#point_graph {
+    flex: 1; /* Take remaining horizontal space */
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    align-items: flex-start;
+    /* border-radius: 10px; */
+    margin-right: 10px;
+    /* width: 100%; */
+}
+
+#line-graph {
+    flex: 1; /* Take remaining horizontal space */
+    /* margin-top: 30px; */
+    margin-left: 10px;
+    width: 100%;
+}
+
