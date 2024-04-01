@@ -1,13 +1,12 @@
 import dash
 from dash import html, dcc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import pandas as pd
 import requests
 import os
 from dotenv import load_dotenv
 import plotly.express as px
 import functions
-import plotly.graph_objs as go
 
 load_dotenv()
 
@@ -91,10 +90,10 @@ app.layout = html.Div(
         html.Div(
             className="layout",
             children=[
-                html.Div(
-                    className="container1",
-                    children=[
-                        html.Div(
+                 html.Div(
+                     className="container1",
+                     children=[
+                         html.Div(
                             id="slideshow-container",
                             className="slideshow-container",
                             style={'display':'none'},
@@ -113,61 +112,55 @@ app.layout = html.Div(
                                 html.Div(id='output-patient-details', style={'padding': '0px'})
                             ]
                         )
-                    ]
-                ),
+                     ]
+                 ),
                 html.Div(
-                    id="container2",
                     className="container2",
                     style={'width': '48%', 'float': 'left'},
                     children=[
                         html.Div(
-                                children=[
-                                    html.Div(
-                                        id='point_graph',
-                                        children=[
-                                            dcc.Graph(
-                                                id='graph1',
-                                                figure={
-                                                    'data': [],
-                                                    'layout': {
-                                                        'title': 'Treatment History',
-                                                        'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                                                        'yaxis': {'title': 'Values', 'showgrid': True},
-                                                        'legend': {'x': 0, 'y': 1},
-                                                        'font': {'family': 'Arial', 'size': 12},
-                                                        'margin': {'l': 200, 'r': -20, 't': 20, 'b': 20}
-                                                    },
-                                                },
-                                                style={'display': 'none', 'width': '90vh', 'height': '90vh'}
-                                            )
-                                        ]
-                                    ),
-                                ],
-                                style={'marginLeft': 'auto', 'marginRight': 0}
-                            ),
-                        html.Div(
-                            id='line_graph',
-                            children = [
+                            children=[
                                 html.Div(
-                                    id='line-graph',
+                                    id='point_graph',
                                     children=[
                                         dcc.Graph(
-                                            id='graph2',
+                                            id='graph',
                                             figure={
                                                 'data': [],
                                                 'layout': {
-                                                    'title': 'HbA1c Over Time',
+                                                    'title': 'Treatment History',
                                                     'xaxis': {'title': 'Timestamp', 'showgrid': True},
-                                                    'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
+                                                    'yaxis': {'title': 'Values', 'showgrid': True},
                                                     'legend': {'x': 0, 'y': 1},
                                                     'font': {'family': 'Arial', 'size': 12},
-                                                }
+                                                    'margin': {'l': 200, 'r': -20, 't': 20, 'b': 20}
+                                                },
                                             },
-                                            style={'display': 'none', 'width': '90vh', 'height': '90vh'}
+                                            style={'display': 'none'}
                                         )
                                     ]
-                                )
+                                ),
                             ],
+                            # style={'marginLeft': 'auto', 'marginRight': 0}
+                        ),
+                        html.Div(
+                            id='line_graph',
+                            children=[
+                                dcc.Graph(
+                                    id='line-graph',
+                                    figure={
+                                        'data': [],
+                                        'layout': {
+                                            'title': 'HbA1c Over Time',
+                                            'xaxis': {'title': 'Timestamp', 'showgrid': True},
+                                            'yaxis': {'title': 'HbA1c Value', 'showgrid': True},
+                                            'legend': {'x': 0, 'y': 1},
+                                            'font': {'family': 'Arial', 'size': 12},
+                                        }
+                                    },
+                                    style={'display': 'none'}
+                                )
+                            ]
                         )
                     ]
                 )
@@ -191,20 +184,18 @@ app.layout = html.Div(
 ])
 
 
-
 @app.callback(
     [
         Output('output-recommendation', 'children'),
         Output('output-recommendation', 'style'),
         Output('output-patient-details', 'children'),
         Output('output-patient-details', 'style'),
-        Output('graph1', 'figure'),
-        Output('graph1', 'style'),
-        Output('graph2', 'figure'),
-        Output('graph2', 'style'),
+        Output('graph', 'figure'),
+        Output('graph', 'style'),
+        Output('line-graph', 'figure'),
+        Output('line-graph', 'style'),
         Output('histo_fig', 'children'),
-        Output('slideshow-container', 'style'),
-        Output('container2', 'style')
+        Output('slideshow-container', 'style')
     ],
     [
         Input('go-button', 'n_clicks'),
@@ -240,8 +231,7 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
                 [],
-                {'display': 'none'},
-                {}
+                {'display': 'none'}
             )
 
         try:
@@ -257,8 +247,7 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
                 [],
-                {'display': 'none'},
-                {}
+                {'display': 'none'}
             )
 
         final_merged_df = final_merged[final_merged['PatID'] == patient_id]
@@ -285,8 +274,7 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'data': [], 'layout': {}},
                 {'display': 'none'},
                 [],
-                {'display': 'none'},
-                {}
+                {'display': 'none'}
             )
 
         histograms = []
@@ -296,8 +284,13 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
 
         # Iterate over each treatment DataFrame
         for treatment, df in regimens_dict.items():
-            # Create histogram and append to the list
-            histograms.append((treatment, px.histogram(df, x="Result Numeric Value", nbins=50, title=f"Similar Patients on {treatment} *" if current_treatment == treatment or best_regimen_name == treatment else f"Similar Patients on {treatment}")))
+            # Create histogram with appropriate title
+            title = f"Similar Patients on {treatment}"
+            if current_treatment == treatment or best_regimen_name == treatment:
+                title += " *"
+
+            histogram = px.histogram(df, x="Result Numeric Value", nbins=50, title=title)
+            histograms.append((treatment, histogram))
 
 
         histogram_divs = [
@@ -347,47 +340,21 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
              range(len(patient_details))]
         )
 
-        traces = []
-        for regimen in final_merged_df['Regimen'].unique():
-            regimen_df = final_merged_df[final_merged_df['Regimen'] == regimen]
-            trace = go.Scatter(
-                x=regimen_df['Result Date'],
-                y=regimen_df['Result Numeric Value'],
-                mode='lines+markers',
-                name=regimen
-            )
-            traces.append(trace)
-
-        # Convert 'Regimen Date' column to datetime format
-        final_merged_df['Regimen Date'] = pd.to_datetime(final_merged_df['Regimen Date'])
-
-        # Calculate the desired range for the x-axis
-        start_date = final_merged_df['Regimen Date'].min() - pd.Timedelta(days=45)
-        end_date = final_merged_df['Regimen Date'].max() + pd.Timedelta(days=45)
-
-        # Create the figure with the adjusted x-axis range
         fig = px.scatter(final_merged_df, x='Regimen Date', y='Regimen', color='Regimen',
-                        title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
-                        template='plotly_white', range_x=[start_date, end_date])
+                         title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
+                         template='plotly_white', range_x=[final_merged_df['Regimen Date'].min(), final_merged_df['Regimen Date'].max()])
 
-        fig2 = go.Figure(data=traces, layout=go.Layout(
-                title='Result History',
-                xaxis={'title': 'Date'},
-                yaxis={'title': 'HbA1c'},
-                template='plotly_white'
-            ))
-
-            # Update the layout of the figure
-        fig2.update_layout(legend={'x': 0, 'y': 1}, margin={'l': 50, 'r': 20, 't': 80, 'b': 50})
-
+        fig2 = px.line(final_merged_df, x='Result Date', y='Result Numeric Value', color='Regimen', title='Result History',
+                       labels={'Result Date': 'Date', 'Result Numeric Value': 'HbA1c'},
+                       template='plotly_white', range_x=[final_merged_df['Result Date'].min(), final_merged_df['Result Date'].max()])
 
         return (
             result_text, {'padding': '20px'}, table, {'padding': '20px'},
             fig, {'display': 'block', 'width': '47vw'}, fig2, {'display': 'block', 'width': '47vw'},
-            histogram_divs[slide_index], {'display': 'flex'}, {'justify-content': 'space-between'}
+            histogram_divs[slide_index], {'display': 'flex'}
         )
 
-    return '', {'padding': '0px'}, [], {'padding': '0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, [], {'display': 'none'}, {}  # Initial or no-click state
+    return '', {'padding': '0px'}, [], {'padding': '0px'}, {'data': [], 'layout': {}}, {'display': 'none'}, {'data': [], 'layout': {}}, {'display': 'none'}, [], {'display': 'none'}  # Initial or no-click state
 
 
 
