@@ -225,6 +225,14 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
         best_result, best_regimen_name = functions.create_patient_recomendation(loaded_models, final_merged, patient_id)
         patient_data_info = functions.generate_patient_infos(patient_id, final_merged)
 
+        # Define the replacement mappings
+        sex_mapping = {1: 'Male', 0: 'Female'}
+        ethnicity_mapping = {1: 'Hispanic or Latino', 0: 'Non-Hispanic or Non-Latino'}
+
+        # Replace values in 'Sex' and 'Ethnicity' columns
+        patient_data_info['Sex'] = patient_data_info['Sex'].replace(sex_mapping)
+        patient_data_info['Ethnicity'] = patient_data_info['Ethnicity'].replace(ethnicity_mapping)
+
         # Check if any of the DataFrames are empty
         if final_merged_df.empty or patient_data_info.empty:
             return (

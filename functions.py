@@ -271,6 +271,9 @@ def generate_patient_infos(patient_id, final_merged):
     # Take the most recent encounter informaton available
     patient_info = patient_info.head(1)
 
+    patient_info['Result Date'] = pd.to_datetime(patient_info['Result Date']).dt.date
+    patient_info['Regimen Date'] = pd.to_datetime(patient_info['Regimen Date']).dt.date
+
     return patient_info
 
 #Function for outputs for frontend, patient result / regimen history information
@@ -367,9 +370,9 @@ best_result, best_regimen = create_patient_recomendation(loaded_models, final_me
 #View the data
 
 patient_data_recommendation = create_patient_recomendation(loaded_models, final_merged, patient_id)
-print(patient_data_recommendation)
+#print(patient_data_recommendation)
 
-# print(patient_info)
+print(patient_info)
 # print(patient_hist)
 # print('Predicted best result:', best_result)
 # print('Predicted best regimen:', best_regimen)
