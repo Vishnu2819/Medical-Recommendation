@@ -344,7 +344,7 @@ def create_patient_recomendation(loaded_models, final_merged, patient_id):
     best_regimen_name = best_model_name
 
     #Round precited HbA1c
-    best_result = round(best_result, 2)
+    best_result = np.round(best_result, decimals=2)
 
     return best_result, best_regimen_name
 
