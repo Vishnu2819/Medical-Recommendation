@@ -100,7 +100,7 @@ app.layout = html.Div(
                             style={'display':'none'},
                             children=[
                                 html.Div(
-                                    id="histo_fig",  # This div will contain the histogram graphs
+                                    id="histo_fig",  
                                     className="histo-fig-container",
                                 ),
                                 html.A(className="prev", children="❮", n_clicks=0, id="prev-button"),
@@ -142,7 +142,6 @@ app.layout = html.Div(
                                     ]
                                 ),
                             ],
-                            # style={'marginLeft': 'auto', 'marginRight': 0}
                         ),
                         html.Div(
                             id='line_graph',
@@ -207,7 +206,7 @@ app.layout = html.Div(
     prevent_initial_call=False
 )
 def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
-    global treatment_dataframes  # Access the global treatment_dataframes
+    global treatment_dataframes 
 
     ctx_id = dash.callback_context.triggered[0]["prop_id"].split(".")[0]
 
@@ -283,9 +282,9 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
         current_treatment = patient_data_info['Regimen'].values[0]
         predicted_result = best_result
 
-        # Iterate over each treatment DataFrame
+        
         for treatment, df in regimens_dict.items():
-            # Create histogram with appropriate title
+            
             title = f"Similar Patients on {treatment}"
             if current_treatment == treatment or best_regimen_name == treatment:
                 title += " *"
@@ -296,7 +295,7 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
 
         histogram_divs = [
             html.Div(
-                className='slide',  # Set the class name for the div
+                className='slide',  
                 children=[
                     dcc.Graph(
                         id=f'graph{i}',
@@ -355,11 +354,9 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
         # Convert 'Regimen Date' column to datetime format
         final_merged_df['Regimen Date'] = pd.to_datetime(final_merged_df['Regimen Date'])
 
-        # Calculate the desired range for the x-axis
         start_date = final_merged_df['Regimen Date'].min() - pd.Timedelta(days=45)
         end_date = final_merged_df['Regimen Date'].max() + pd.Timedelta(days=45)
 
-        # Create the figure with the adjusted x-axis range
         fig = px.scatter(final_merged_df, x='Regimen Date', y='Regimen', color='Regimen',
                         title='Treatment History', labels={'Regimen Date': 'Timestamp', 'Result Numeric Value': 'Values'},
                         template='plotly_white', range_x=[start_date, end_date])

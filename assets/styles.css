@@ -5,16 +5,12 @@ body{
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     background-color: #E9FBE8;
-    /* background-color: #efc2c2;  */
-    /* background-image: linear-gradient(to right,rgb(216, 216, 91), #FE0059); */
     margin: 30px;
 }
 
 h1{
     text-align: center;
-    /* color: #a22222; */
     color: #3a8039;
-    /* color: white; */
     font-size: 50px;
 }
 
@@ -46,7 +42,6 @@ h1{
 
 #output-recommendation{
     margin-top: 30px;
-    /* padding: 20px; */
     background-color: white;
     border-radius: 5px;
 }
@@ -79,12 +74,6 @@ td{
     width: 100%;
 }
 
-/* #point_graph{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-} */
 
 .container{
     display: flex;
@@ -98,24 +87,17 @@ td{
 
 .graphs {
     display: inline-block;
-    width: 90%; /* Adjust the width as needed */
-    margin: 10px; /* Add margin between the graphs */
+    width: 90%; 
+    margin: 10px; 
 }
 
 .layout{
     display: flex;
     flex-direction: column;
-    /* justify-content: space-around; */
-    /* align-items: center; */
     float: top;
     margin: 0;
 }
 
-/* .container2 {
-    width: 45%;
-    display: flex;
-    flex-direction: row;
-} */
 
 .patient_details_container{
     display: flex;
@@ -123,20 +105,6 @@ td{
     justify-content: center;
 }
 
-/* .slideshow-container {
-    top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 450px;
-    overflow: hidden;
-    border: 20px solid white;
-    border-radius: 10px;
-    width: 100%; 
-    float: left;
-    margin: 0; 
-    position: relative; 
-} */
 
 
 .slides {
@@ -148,15 +116,6 @@ td{
 }
 
 
-/* .prev, .next {
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 10;
-    cursor: pointer;
-} */
 
 .prev, .next {
     position: absolute;
@@ -200,9 +159,9 @@ td{
 .container1 {
     position: relative;
     width: 100%;
-    height: 100%; /* Adjust height as needed */
+    height: 100%;
     display: flex;
-    justify-content: space-around; /* Align items to the left */
+    justify-content: space-around;
     flex-direction: row;
     margin-top: 30px;
 }
@@ -215,18 +174,9 @@ td{
     margin-top: 30px;
 }
 
-/* .slideshow-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border: 20px solid white;
-    border-radius: 10px;
-} */
 
 .slideshow-container {
-    flex: 1; /* Take remaining vertical space */
+    flex: 1; 
     display: flex;
     justify-content: center;
     margin-right: 40px;
@@ -234,23 +184,20 @@ td{
     overflow: hidden;
     border: 20px solid white;
     border-radius: 10px;
-    position: relative; /* Added position relative */
+    position: relative; 
 }
 
 #point_graph {
-    flex: 1; /* Take remaining horizontal space */
+    flex: 1; 
     display: flex;
-    justify-content: flex-start; /* Align items to the left */
+    justify-content: flex-start; 
     align-items: flex-start;
     margin-top: -30px;
-    /* border-radius: 10px; */
     margin-right: 10px;
-    /* width: 100%; */
 }
 
 #line-graph {
-    flex: 1; /* Take remaining horizontal space */
-    /* margin-top: 30px; */
+    flex: 1; 
     margin-left: 10px;
     width: 100%;
 }
