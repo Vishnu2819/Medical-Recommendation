@@ -277,10 +277,25 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
                 {'display': 'none'}
             )
 
+        
         histograms = []
 
         current_treatment = patient_data_info['Regimen'].values[0]
         predicted_result = best_result
+
+        vline_marker = {
+            'type': 'line',
+            'x0': best_result,
+            'x1': best_result,
+            'y0': 0,
+            'y1': 1,
+            'xref': 'x',
+            'yref': 'paper',
+            'line': {
+                'color': 'red',
+                'width': 2
+            }
+        }
 
         
         for treatment, df in regimens_dict.items():
@@ -291,6 +306,10 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
 
             histogram = px.histogram(df, x="Result Numeric Value", nbins=50, title=title)
             histograms.append((treatment, histogram))
+
+            # If the condition matches, add the vline_marker to the layout
+            if current_treatment == treatment:
+                histogram.update_layout(shapes=[vline_marker])
 
 
         histogram_divs = [
