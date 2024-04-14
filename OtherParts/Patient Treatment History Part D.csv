@@ -1,9 +1,0 @@
-PatID,Date Result,Result Numeric Value,Date Treatment,Treatment 1,Treatment 2,Treatment 3
-12345678,1/1/2017,9.1,1/5/2017,meformin(glucophage),NA,NA
-12345678,6/1/2017,8.6,6/5/2017,meformin(glucophage),NA,NA
-12345678,12/1/2017,8.4,12/5/2017,meformin(glucophage),NA,NA
-12345678,1/1/2018,8.5,1/5/2018,meformin(glucophage),NA,NA
-12345678,6/1/2018,8.2,6/5/2018,meformin(glucophage),NA,NA
-12345678,12/1/2018,7.9,12/5/2018,meformin(glucophage),NA,NA
-12345678,1/1/2019,7.8,1/5/2019,meformin(glucophage),NA,NA
-12345678,6/1/2019,7.1,6/5/2019,empagliflozin(jardiance) ,meformin(glucophage),NA
