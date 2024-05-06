@@ -15,6 +15,7 @@ response = requests.get(os.getenv('url'), timeout=60)
 response_2 = requests.get(os.getenv('url_2'), timeout=60)
 response_3 = requests.get(os.getenv('url_3'), timeout=60)
 
+
 pd.set_option('display.max_rows', 1500)
 pd.set_option('display.max_columns', 1500)
 pd.set_option('display.width', 3000)
@@ -56,14 +57,17 @@ regmimen_names = {
 histogram_divs = []
 treatment_dataframes = {}
 
+
 app = dash.Dash(__name__)
+
+app.secret_key = os.urandom(24)
 
 image_div = html.Div(
     className="logos",
     children=
         [
         html.Div([
-            html.Img(src="./assets/curf.png", style={'height': '80px', 'object-fit': 'cover'})
+            html.Img(src="./assets/IE_logo.png", style={'height': '70px', 'object-fit': 'cover'})
         ]),
         html.Div([
             html.Img(src="./assets/prisma.png", style={'height': '80px', 'object-fit': 'cover'})
@@ -324,14 +328,19 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
             ) for i, (_, histogram) in enumerate(histograms, start=0)
         ]
 
+
         total_slides = len(histogram_divs)
 
         slide_index = 0
+        # slide_index = session.get('slide_index', 0)
         if ctx_id in ["prev-button", "next-button"]:
             if ctx_id == "prev-button":
-                slide_index = (n_clicks_prev or 0) % total_slides
+                slide_index = (slide_index - n_clicks_prev) % total_slides
             elif ctx_id == "next-button":
-                slide_index = (n_clicks_next or 0) % total_slides
+                slide_index = (slide_index + n_clicks_next) % total_slides
+
+        print("Final slide index:", slide_index)
+        
 
         if current_treatment == best_regimen_name:
             result_text = [
@@ -403,3 +412,4 @@ def update_output(n_clicks_go, n_clicks_prev, n_clicks_next, patient_id):
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
+
