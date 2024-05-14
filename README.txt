@@ -8,8 +8,8 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/abrarfaizmohammed)
-[![ShareHub](https://img.shields.io/badge/ShareHub-green?style=for-the-badge&logoColor=white)](https://github.com/AbrarFaizMohammed/ShareHub)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/vishnuvulli/)
+[![Patient Treatment Recommendation](https://img.shields.io/badge/Patient_Treatment_Recommendation-green?style=for-the-badge&logoColor=white)](https://github.com/AbrarFaizMohammed/ShareHub)
 
 
 
