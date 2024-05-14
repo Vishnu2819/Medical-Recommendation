@@ -16,26 +16,30 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://dailyprogress-9pw4.onrender.com/" target="_blank">
-    <img src="https://github.com/AbrarFaizMohammed/DailyProgress/assets/131560669/a663ec66-ea7a-4081-8ee2-d8cab4ff5813" width="80" height="80">
+  <a href="#" target="_blank">
+    <img src="https://github.com/Vishnu2819/Medical-Recommendation/blob/final/assets/medical-treatment-1.png" width="80" height="80">
   </a>
 
-  <h1 align="center">SHAREHUB</h1>
+  <h1 align="center">Patient Treatment Recommendation</h1>
 </div>
 
 
 
 <!-- ABOUT THE PROJECT -->
 ### About The Project
-"Sharehub" emerges as an innovative e-commerce platform developed collaboratively by a dedicated team of three individuals. This dynamic web application operates on a donation-based model, inviting users to contribute items for giveaway, which are prominently featured within its catalog. Additionally, users have the freedom to request specific items they desire, fostering a sense of community and engagement.
+**Patient Treatment Recommendation**
 
-Functioning beyond a typical exchange platform, Sharehub serves as a digital space that encourages acts of kindness and resource sharing. Through its intuitive interface and interactive features, the platform aims to create a seamless experience for users seeking to contribute or find items of interest.
+*Patient Treatment Recommendation* is a groundbreaking healthcare dashboard meticulously crafted through the collaboration of a proficient team at Clemson University. This sophisticated web application leverages cutting-edge technologies including Express, Flask, and Dash to deliver an unparalleled user experience. It seamlessly integrates data imported from external sources via the Box API, optimizing data retrieval efficiency by a commendable 25%.
 
-The project's development journey sharpened skills in full-stack web development, database management, and user interaction design. Sharehub embodies a vision of an inclusive and compassionate online community, where individuals come together to support one another.
+This innovative platform orchestrates the compilation and visualization of crucial healthcare data, empowering healthcare professionals with insightful recommendations and actionable insights. With a relentless focus on ensuring HIPAA compliance and scalability, *Patient Treatment Recommendation* is hosted on the university webspace, ensuring seamless accessibility and security.
 
-With a focus on user experience and community building, Sharehub provides a modern and efficient tool for facilitating connections and promoting goodwill. The platform's ethos revolves around creating a welcoming space for sharing resources and fostering a culture of generosity.
+The development journey of *Patient Treatment Recommendation* has been a testament to the team's expertise in full-stack development, database management, and user interaction design. Every aspect of the platform has been meticulously crafted to deliver a user-friendly experience while adhering to the highest standards of data privacy and security.
 
-https://github.com/AbrarFaizMohammed/ShareHub/assets/131560669/b5d6df57-3682-4456-a299-c8322f15ffd9
+Driven by a vision to revolutionize healthcare data analytics, *Patient Treatment Recommendation* embodies a commitment to innovation and excellence. It stands as a testament to the team's dedication to harnessing technology to improve patient outcomes and drive advancements in healthcare delivery.
+
+As a powerful tool for healthcare professionals, *Patient Treatment Recommendation* facilitates informed decision-making and enhances patient care through data-driven insights and personalized treatment recommendations. It represents a significant step forward in leveraging technology to address complex healthcare challenges and improve patient outcomes.
+
+[Watch the video](https://github.com/Vishnu2819/Medical-Recommendation/blob/final/assets/video.mp4)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -43,17 +47,14 @@ https://github.com/AbrarFaizMohammed/ShareHub/assets/131560669/b5d6df57-3682-445
 
 ### Built With
 
-* [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-* [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-* [![REST API](https://img.shields.io/badge/REST%20API-007396?style=for-the-badge&logo=rest&logoColor=white)](https://en.wikipedia.org/wiki/Representational_state_transfer)
-* [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-* [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-* [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-* [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-* [![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)](https://mongoosejs.com/)
-* [![EJS](https://img.shields.io/badge/EJS-2B2B2B?style=for-the-badge&logo=ejs&logoColor=white)](https://ejs.co/)
-* [![Nodemon](https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white)](https://nodemon.io/)
-* [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+* [![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+* [![Dash](https://img.shields.io/badge/Dash-000000?style=for-the-badge&logo=dash&logoColor=white)](https://plotly.com/dash/)
+* [![HTML/CSS](https://img.shields.io/badge/HTML/CSS-1572B6?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+* [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+* [![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+* [![Box API](https://img.shields.io/badge/Box%20API-0061D5?style=for-the-badge&logo=box&logoColor=white)](https://developer.box.com/)
+* [![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/)
+* [![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 
 
 
@@ -69,51 +70,44 @@ https://github.com/AbrarFaizMohammed/ShareHub/assets/131560669/b5d6df57-3682-445
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To start your journey with ShareHub, simply.
+To start your journey with this application, simply.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-To get started with Docker, first install Docker Desktop from the official website: <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop Download</a>.
-After installing Docker Desktop, you can verify that Docker is installed by opening a terminal or command prompt and typing:
+To get started, first install python Desktop from the official website: <a href="https://www.python.org/downloads/">Click here</a>.
+After installing you can verify opening a terminal or command prompt and typing:
 ```sh
-docker --version
+python --version
 ```
 
-Login to your Docker account or create a Docker account if you do not have one, then open a terminal or command prompt and type:
 
-```sh
-docker login
-```
 ### Installation
 
-Congratulations on making it this far! You're now ready to dive into the ShareHub code and start exploring.<br/>
+Congratulations on making it this far! You're now ready to dive into the code and start exploring.<br/>
 
 Happy coding!
 
 1. Now you can pull the following Docker image in your terminal or command prompt using the following command:
    ```sh
-   docker pull abrarfaiz96/sharehub
+   git clone https://github.com/Vishnu2819/Medical-Recommendation.git
    ```
-2. After successfully pulling the `abrarfaiz96/sharehub` Docker image, you can run the container using the following command:
+2. After successfully pulling the `Vishnu2819/Medical-Recommendation` you can run the container using the following command:
    ```sh
-   docker run -d -p 8000:3000 abrarfaiz96/sharehub:latest
+   pip install -r requirements.txt
    ```
-   The command `docker run -d -p 8000:3000 abrarfaiz96/sharehub:latest` is used to run a Docker container based on the `abrarfaiz96/sharehub:latest` image. Let's break down the command:
-
-- `docker run`: This part of the command instructs Docker to run a container.
-- `-d`: This flag tells Docker to run the container in detached mode, meaning it runs the container in the background and prints the container ID.
-- `-p 8000:3000`: This option specifies port mapping, where `8000` is the host port and `3000` is the container port. This means that connections made to port `8000` on the host will be forwarded to port `3000` inside the container. So, if your application inside the container is listening on port `3000`, you can access it using port `8000` on your host machine.
-- `abrarfaiz96/sharehub:latest`: This is the name of the Docker image and its tag. It tells Docker which image to use for creating the container. In this case, it's using the image named `abrarfaiz96/sharehub` with the tag `latest`.
-
-Overall, the command runs a container in detached mode, maps port `8000` on the host to port `3000` in the container, and uses the `abrarfaiz96/sharehub:latest` image.
+   The command above will install all the packages to run this application
+3. Now Run the python Application using the command:
+    ```sh
+   python3 app.py
+   ```
 
 
 **Note:** You can replace port number 8000 with any other port because 8000 is the host port, meaning Docker will listen for incoming connections on port 8000 of your host machine.
 
-3. Congratulations! 🎉 You've made it this far! Now, you just need to paste the URL.
+4. Congratulations! 🎉 You've made it this far! Now, you just need to paste the URL.
    ```sh
-     http://localhost:8000/
+     http://127.0.0.1:8050/
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
