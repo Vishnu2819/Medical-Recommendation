@@ -39,7 +39,8 @@ Driven by a vision to revolutionize healthcare data analytics, *Patient Treatmen
 
 As a powerful tool for healthcare professionals, *Patient Treatment Recommendation* facilitates informed decision-making and enhances patient care through data-driven insights and personalized treatment recommendations. It represents a significant step forward in leveraging technology to address complex healthcare challenges and improve patient outcomes.
 
-[Watch the video](https://github.com/Vishnu2819/Medical-Recommendation/blob/final/assets/video.mp4)
+https://github.com/Vishnu2819/Medical-Recommendation/assets/29750126/723aa3fb-7980-4b72-b34e-5fb746b5c042
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
