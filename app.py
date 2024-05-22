@@ -159,21 +159,6 @@ app.layout = html.Div(
                     ]
                 )
             ]
-        ),
-        html.Div(
-            id="tooltip",
-            style={
-                "position": "fixed",
-                "bottom": "10px",
-                "left": "10px",
-                "padding": "5px",
-                "background-color": "rgba(0, 0, 0, 0.8)",
-                "color": "#fff",
-                "border-radius": "5px"
-            },
-            children=[
-                html.Span("Acknowledgments", title="Supported by CURF-HSC Innovation Maturation Fund granted by Clemson University Research Foundation and Prisma Health Science Center")
-            ]
         )
 ])
 
