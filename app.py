@@ -62,17 +62,7 @@ app = dash.Dash(__name__)
 
 app.secret_key = os.urandom(24)
 
-image_div = html.Div(
-    className="logos",
-    children=
-        [
-        html.Div([
-            html.Img(src="./assets/IE_logo.png", style={'height': '70px', 'object-fit': 'cover'})
-        ]),
-        html.Div([
-            html.Img(src="./assets/prisma.png", style={'height': '80px', 'object-fit': 'cover'})
-        ])
-    ])
+
 
 app.layout = html.Div(
     children=[
